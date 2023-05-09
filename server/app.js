@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
@@ -15,7 +16,6 @@ const URL = process.env.MONGO_CONNECTION_URL
 const port = process.env.PORT
 
 mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set("useCreateIndex", true)
 
 app.get("/test", (req, res) => {
     res.json({ message: "test" })
