@@ -15,4 +15,29 @@ const resgisterUser = async (req, res) => {
     }
 };
 
-module.exports = { resgisterUser }
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    const pass = bcrypt.compareSync(password, user.password);
+
+    if (user) {
+        if (pass) {
+            jwt.sign(
+                { email: user.email, id: user._id },
+                process.env.JWT_SECRET,
+                {},
+                (err, token) => {
+                    if (err) throw err;
+                    res.cookie("token", token).json(user);
+                }
+            );
+        } else {
+            res.json("Entered password is wrong!");
+        }
+    } else {
+        res.json("not found");
+    }
+};
+
+
+module.exports = { resgisterUser, loginUser }
