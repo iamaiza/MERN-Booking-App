@@ -1,9 +1,12 @@
+import { Route, Routes } from "react-router-dom"
+import { Layout } from "./index"
+
 function App() {
 
   return (
-    <>
-      Hello World
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />} />
+    </Routes>
   )
 }
 
