@@ -23,7 +23,7 @@ const Header = () => {
                 </button>
             </div>
             <Link
-                to={user ? "/profile" : "/login"}
+                to={user ? "/account" : "/login"}
                 className="flex items-center gap-3 border rounded-full py-2 px-4"
             >
                 <HambargerIcon />
