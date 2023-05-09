@@ -1,13 +1,17 @@
-import { Route, Routes } from "react-router-dom"
-import { Layout } from "./index"
+import { Route, Routes } from "react-router-dom";
+import { Layout } from "./index";
+import { UserContextProvider } from "./Context/UserContext";
 
 function App() {
-
   return (
-    <Routes>
-      <Route path="/" element={<Layout />} />
-    </Routes>
-  )
+    <UserContextProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path='/login' element={<Login />} />
+        </Route>
+      </Routes>
+    </UserContextProvider>
+  );
 }
 
-export default App
+export default App;
