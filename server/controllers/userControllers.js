@@ -54,4 +54,8 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-module.exports = { resgisterUser, loginUser, getUserProfile }
+const userLogout = (req, res) => {
+    res.cookie('token', '').json({ message: 'Successfully logged out' })
+}
+
+module.exports = { resgisterUser, loginUser, getUserProfile, userLogout }
