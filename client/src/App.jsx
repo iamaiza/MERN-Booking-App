@@ -1,6 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import { Layout, Login, Register } from "./index";
 import { UserContextProvider } from "./Context/UserContext";
+import axios from "axios"
+
+axios.defaults.baseURL = "http://localhost:3000"
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
