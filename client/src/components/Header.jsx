@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { LogoIcon, SearchIcon, HambargerIcon, UserIcon } from "./icons/Icons";
+import { UserContext } from "../Context/UserContext";
 
 const Header = () => {
+    const { user } = useContext(UserContext);
+
     return (
         <header className="flex items-center justify-between mb-5">
             <a href="" className="flex items-center gap-1 text-primary">
@@ -24,9 +27,15 @@ const Header = () => {
                 className="flex items-center gap-3 border rounded-full py-2 px-4"
             >
                 <HambargerIcon />
-                <div className="bg-gray-500 text-white rounded-full border-2 border-gray-500 overflow-hidden">
-                    <UserIcon />
-                </div>
+                {!user ? (
+                    <div className="bg-gray-500 text-white rounded-full border-2 border-gray-500 overflow-hidden">
+                        <UserIcon />
+                    </div>
+                ) : (
+                    <div className="w-7 h-7 rounded-full bg-primary text-white flex justify-center items-center font-bold">
+                        {user.name.split("")[0]}
+                    </div>
+                )}
             </Link>
         </header>
     );
