@@ -8,10 +8,10 @@ const Header = () => {
 
     return (
         <header className="flex items-center justify-between mb-5">
-            <a href="" className="flex items-center gap-1 text-primary">
+            <Link to="/" className="flex items-center gap-1 text-primary">
                 <LogoIcon />
                 <span className="font-bold text-xl">airbnb</span>
-            </a>
+            </Link>
             <div className="flex gap-3 border rounded-full py-3 px-7 shadow-md shadow-gray-300">
                 <div className="font-bold">Anywhere</div>
                 <div className="border-l"></div>
