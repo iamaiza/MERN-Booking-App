@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Layout, Login, Register } from "./index";
+import { Layout, Login, Register, Home } from "./index";
 import { UserContextProvider } from "./Context/UserContext";
 import axios from "axios"
 
