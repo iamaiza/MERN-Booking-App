@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { PlusIcon } from "../icons/PlaceIcons";
-import PlaceForm from "../components/PlaceForm/PlaceForm";
+import PlaceForm from "../components/PlaceForm";
 
 const Places = () => {
     const { actionId } = useParams();
