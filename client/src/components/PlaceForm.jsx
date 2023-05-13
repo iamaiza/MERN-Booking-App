@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useState, Fragment } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import "./PlaceForm.css";
-import { UploadIcon } from "../../icons/PlaceIcons";
 import Perks from "./Perks";
+import UploadImg from "./UploadImg";
+import axios from "axios";
 
 const PlaceForm = () => {
-    const URL = import.meta.env.VITE_IMG_URL;
     const { action } = useParams();
     const [title, setTitle] = useState("");
     const [address, setAddress] = useState("");
-    const [photo, setPhoto] = useState("");
     const [photos, setPhotos] = useState([]);
     const [description, setDescription] = useState("");
     const [perks, setPerks] = useState([]);
@@ -18,49 +16,45 @@ const PlaceForm = () => {
     const [checkInTime, setCheckInTime] = useState("");
     const [checkOutTime, setCheckOutTime] = useState("");
     const [maxGuest, setMaxGuest] = useState("");
+    const [redirect, setRedirect] = useState("")
 
     const inputTitle = (title) => <h2>{title}</h2>;
     const inputText = (text) => <p>{text}</p>;
 
     const preInput = (title, text) => {
         return (
-            <>
+            <Fragment>
                 {inputTitle(title)}
                 {inputText(text)}
-            </>
+            </Fragment>
         );
     };
 
-    const addPhotoHandler = async (e) => {
+    const addPlaceHandler = async (e) => {
         e.preventDefault();
 
-        const { data: filename } = await axios.post("/upload-by-link", {
-            link: photo,
+        await axios.post("/places", {
+            title,
+            address,
+            photos,
+            description,
+            perks,
+            extraInfo,
+            checkInTime,
+            checkOutTime,
+            maxGuest,
         });
-        setPhotos((prev) => {
-            return [...prev, filename];
-        });
-        setPhoto("");
+
+        setRedirect("/account/places")
     };
 
-    const uploadPhotoHandler = async(e) => {
-        const files = e.target.files;
-        const data = new FormData();
-        for (let i = 0; i < files.length; i++) {
-            data.append("photos", files[i]);
-        }
-        const { data: filenames } = await axios
-            .post("/upload", data, {
-                headers: { "Content-Type": "multipart/form-data" },
-            })
-            setPhotos((pre) => {
-                return [...pre, ...filenames];
-            })
-    };
+    if(redirect) {
+        return <Navigate to={redirect} />
+    }
 
     return (
         <div>
-            <form action="" className="place-form">
+            <form action="" className="place-form" onSubmit={addPlaceHandler}>
                 <div>
                     {preInput(
                         "Title",
@@ -73,6 +67,7 @@ const PlaceForm = () => {
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
+
                 <div>
                     {preInput("Address", "Address to this place")}
                     <input
@@ -82,46 +77,12 @@ const PlaceForm = () => {
                         onChange={(e) => setAddress(e.target.value)}
                     />
                 </div>
+
                 <div>
                     {preInput("Photos", "More = Better")}
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            placeholder="Add using link ....jpg"
-                            value={photo}
-                            onChange={(e) => setPhoto(e.target.value)}
-                        />
-                        <button
-                            className="bg-gray-200 px-5 rounded-2xl"
-                            onClick={addPhotoHandler}
-                        >
-                            Add&nbsp;photo
-                        </button>
-                    </div>
-                    <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                        {photos.length > 0 &&
-                            photos.map((link) => (
-                                <div key={link} className="h-32 flex">
-                                    <img
-                                        className="rounded-2xl w-full object-cover"
-                                        src={ URL + link }
-                                        alt=""
-                                    />
-                                </div>
-                            ))}
-
-                        <label className="h-32 flex justify-center items-center gap-1 border bg-transparent cursor-pointer p-2 rounded-2xl text-2xl text-gray-600">
-                            <input
-                                type="file"
-                                multiple
-                                className="hidden"
-                                onChange={uploadPhotoHandler}
-                            />
-                            <UploadIcon />
-                            Upload
-                        </label>
-                    </div>
+                    <UploadImg photos={photos} setPhotos={setPhotos} />
                 </div>
+
                 <div>
                     {preInput("Description", "Description of the place")}
                     <textarea
@@ -130,10 +91,12 @@ const PlaceForm = () => {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
+
                 <div>
                     {preInput("Perks", "Select all the perks of your place")}
                     <Perks perks={perks} setPerks={setPerks} />
                 </div>
+
                 <div>
                     {preInput("Extra Info.", "House rules, etc.")}
                     <textarea
@@ -142,12 +105,12 @@ const PlaceForm = () => {
                         onChange={(e) => setExtraInfo(e.target.value)}
                     />
                 </div>
+
                 <div>
                     {preInput(
                         "Check in&out times",
                         "Add check in and out times, remember to have some time window for cleaning the room between guest"
                     )}
-
                     <div className="grid sm:grid-cols-3 gap-3">
                         <div>
                             <h3>Check in time</h3>
@@ -178,6 +141,7 @@ const PlaceForm = () => {
                         </div>
                     </div>
                 </div>
+
                 <button className="primary my-4">Save</button>
             </form>
         </div>
