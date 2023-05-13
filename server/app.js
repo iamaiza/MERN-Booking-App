@@ -4,13 +4,15 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const cookieParser = require("cookie-parser")
 const userRoutes = require("./routes/userRoutes.js")
+const placeRoutes = require("./routes/placeRoutes.js") 
 
 const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({credentials: true, origin: "http://localhost:5173"}))
-app.use(userRoutes)
+app.use(userRoutes, placeRoutes)
+app.use('/uploads', express.static(__dirname+'/uploads'))
 
 const URL = process.env.MONGO_CONNECTION_URL
 const port = process.env.PORT
