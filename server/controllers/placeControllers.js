@@ -22,7 +22,8 @@ const uploadMediaImgFile = (req, res) => {
         const ext = parts[parts.length - 1]
         const newPath = path + '.' + ext;
         fs.renameSync(path, newPath)
-        uploadedFiles.push(newPath)
+        const uploadedFilePath = newPath.substring(newPath.indexOf("uploads//") + "uploads//".length)
+        uploadedFiles.push(uploadedFilePath)
     }
 
     res.json(uploadedFiles)
