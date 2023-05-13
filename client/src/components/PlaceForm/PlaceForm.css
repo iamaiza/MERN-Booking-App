@@ -1,0 +1,18 @@
+.place-form h2{
+    @apply text-xl font-semibold mt-4
+}
+
+.place-form h3 {
+    @apply text-base font-semibold mt-2
+}
+
+.place-form input {
+    @apply mt-2
+}
+
+.place-form p {
+    @apply text-sm text-gray-500
+}
+.place-form .icons {
+    @apply flex items-center p-4 border rounded-2xl gap-2 cursor-pointer
+}

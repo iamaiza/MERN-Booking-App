@@ -15,6 +15,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path="/account/:pageId?" element={<AccountPage />} />
+          <Route path="/account/:pageId/:actionId" element={<AccountPage />} />
         </Route>
       </Routes>
     </UserContextProvider>
