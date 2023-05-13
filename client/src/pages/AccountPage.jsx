@@ -6,7 +6,7 @@ import Places from './Places'
 import { BookingListIcon, PlaceIcon, UserAvatar } from '../icons/AccountPageNavIcons'
 
 const AccountPage = () => {
-    // const [redirect, setRedirect] = useState(null)
+    const [redirect, setRedirect] = useState(null)
     const { user, isReady, setUser } = useContext(UserContext)
     let { pageId } = useParams()
 
@@ -16,7 +16,7 @@ const AccountPage = () => {
 
     const logoutHandler = async() => {
         await axios.post("/logout")
-        // setRedirect('/')
+        setRedirect('/')
         setUser(null)
     }
 
@@ -37,9 +37,9 @@ const AccountPage = () => {
         return classes
     }
 
-    // if(redirect) {
-    //     return <Navigate to={redirect} />
-    // }
+    if(redirect) {
+        return <Navigate to={redirect} />
+    }
 
   return (
     <div>
