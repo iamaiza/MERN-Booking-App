@@ -6,6 +6,7 @@ import { UploadIcon } from "../../icons/PlaceIcons";
 import Perks from "./Perks";
 
 const PlaceForm = () => {
+    const URL = import.meta.env.VITE_IMG_URL;
     const { action } = useParams();
     const [title, setTitle] = useState("");
     const [address, setAddress] = useState("");
@@ -42,22 +43,19 @@ const PlaceForm = () => {
         setPhoto("");
     };
 
-    const uploadPhotoHandler = (e) => {
+    const uploadPhotoHandler = async(e) => {
         const files = e.target.files;
         const data = new FormData();
         for (let i = 0; i < files.length; i++) {
             data.append("photos", files[i]);
         }
-        axios
+        const { data: filenames } = await axios
             .post("/upload", data, {
                 headers: { "Content-Type": "multipart/form-data" },
             })
-            .then((res) => {
-                const { data: filename } = res;
-                setPhotos((pre) => {
-                    return [...pre, filename];
-                });
-            });
+            setPhotos((pre) => {
+                return [...pre, ...filenames];
+            })
     };
 
     return (
@@ -103,19 +101,16 @@ const PlaceForm = () => {
                     <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                         {photos.length > 0 &&
                             photos.map((link) => (
-                                <div key={link}>
+                                <div key={link} className="h-32 flex">
                                     <img
-                                        className="rounded-2xl"
-                                        src={
-                                            "http://localhost:3000/uploads/" +
-                                            link
-                                        }
+                                        className="rounded-2xl w-full object-cover"
+                                        src={ URL + link }
                                         alt=""
                                     />
                                 </div>
                             ))}
 
-                        <label className="flex justify-center items-center gap-1 border bg-transparent cursor-pointer p-2 rounded-2xl text-2xl text-gray-600">
+                        <label className="h-32 flex justify-center items-center gap-1 border bg-transparent cursor-pointer p-2 rounded-2xl text-2xl text-gray-600">
                             <input
                                 type="file"
                                 multiple
