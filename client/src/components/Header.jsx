@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { LogoIcon, SearchIcon, HambargerIcon, UserIcon } from "./icons/Icons";
+import { LogoIcon, SearchIcon, HambargerIcon, UserIcon } from "./icons/icons";
 import { UserContext } from "../Context/UserContext";
 
 const Header = () => {
