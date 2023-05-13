@@ -72,4 +72,9 @@ const UserIcon = () => {
     );
 };
 
-export { LogoIcon, SearchIcon, HambargerIcon, UserIcon };
+export { 
+    LogoIcon,
+    SearchIcon,
+    HambargerIcon,
+    UserIcon 
+};
