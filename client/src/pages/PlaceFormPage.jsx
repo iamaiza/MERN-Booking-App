@@ -1,12 +1,12 @@
 import React, { useState, Fragment } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import "./PlaceForm.css";
-import Perks from "./Perks";
-import UploadImg from "./UploadImg";
+import Perks from "../components/Perks";
+import UploadImg from "../components/UploadImg";
 import axios from "axios";
+import Navigation from "../components/Navigation";
 
 const PlaceForm = () => {
-    const { action } = useParams();
     const [title, setTitle] = useState("");
     const [address, setAddress] = useState("");
     const [photos, setPhotos] = useState([]);
@@ -15,8 +15,8 @@ const PlaceForm = () => {
     const [extraInfo, setExtraInfo] = useState("");
     const [checkInTime, setCheckInTime] = useState("");
     const [checkOutTime, setCheckOutTime] = useState("");
-    const [maxGuest, setMaxGuest] = useState("");
-    const [redirect, setRedirect] = useState("")
+    const [maxGuest, setMaxGuest] = useState(1);
+    const [redirect, setRedirect] = useState(false)
 
     const inputTitle = (title) => <h2>{title}</h2>;
     const inputText = (text) => <p>{text}</p>;
@@ -30,31 +30,45 @@ const PlaceForm = () => {
         );
     };
 
-    const addPlaceHandler = async (e) => {
+    const emptyInput = (
+        title === '' || address === '' || photos === [] || 
+        description === '' || perks === [] || extraInfo === '' || 
+        checkInTime === '' || checkOutTime === ''
+    )
+    const addNewPlaceHandler = async (e) => {
         e.preventDefault();
 
-        await axios.post("/places", {
-            title,
-            address,
-            photos,
-            description,
-            perks,
-            extraInfo,
-            checkInTime,
-            checkOutTime,
-            maxGuest,
-        });
+        try {
 
-        setRedirect("/account/places")
+            if(emptyInput) {
+                return;
+            }
+            await axios.post("/add-places", {
+                title,
+                address,
+                photos,
+                description,
+                perks,
+                extraInfo,
+                checkInTime,
+                checkOutTime,
+                maxGuest,
+            });
+    
+            setRedirect(true)
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    if(redirect) {
-        return <Navigate to={redirect} />
+    if(redirect && !emptyInput) {
+        return <Navigate to="/account/places" />
     }
 
     return (
         <div>
-            <form action="" className="place-form" onSubmit={addPlaceHandler}>
+            <Navigation />
+            <form action="" className="place-form" onSubmit={addNewPlaceHandler}>
                 <div>
                     {preInput(
                         "Title",

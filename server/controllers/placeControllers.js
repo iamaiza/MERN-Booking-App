@@ -1,6 +1,7 @@
 const imgDownloader = require("image-downloader");
 const fs = require("fs");
 const Places = require("../models/placesModel.js")
+const jwt = require("jsonwebtoken")
 
 const uploadImageByLink = async (req, res) => {
     const { link } = req.body;
@@ -29,7 +30,7 @@ const uploadMediaImgFile = (req, res) => {
     res.json(uploadedFiles);
 };
 
-const addPlaces = async (req, res) => {
+const addNewPlaces = (req, res) => {
     const {
         title,
         address,
@@ -42,18 +43,38 @@ const addPlaces = async (req, res) => {
         maxGuest,
     } = req.body;
 
-    await Places.create({
-        title, address,
-        images: photos,
-        description, perks, extraInfo,
-        checkIn: checkInTime,
-        checkOut: checkOutTime,
-        maxGuest
+    const { token } = req.cookies
+
+    jwt.verify(token, process.env.JWT_SECRET, {}, async(err, userData) => {
+        if(err) throw err
+
+        const place = await Places.create({
+            owner: userData.id,
+            title, address,
+            images: photos,
+            description, perks, extraInfo,
+            checkIn: checkInTime,
+            checkOut: checkOutTime,
+            maxGuest
+        })
+        res.json(place)
     })
+
 };
+
+const getAllPlaces = (req, res) => {
+    const { token } = req.cookies
+
+    jwt.verify(token, process.env.JWT_SECRET, {}, async(err, userData) => {
+        const { id } = userData
+        const places = await Places.find({owner: id})
+        res.json(places)
+    })
+}
 
 module.exports = { 
     uploadImageByLink, 
     uploadMediaImgFile, 
-    addPlaces 
+    addNewPlaces,
+    getAllPlaces 
 };
