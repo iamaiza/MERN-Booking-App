@@ -3,7 +3,7 @@ import { UserContext } from '../Context/UserContext'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import axios from "axios"
 
-const AccountPage = () => {
+const ProfilePage = () => {
     // const [redirect, setRedirect] = useState(null)
     const { user, isReady, setUser } = useContext(UserContext)
     let { pageId } = useParams()
@@ -55,4 +55,4 @@ const AccountPage = () => {
   )
 }
 
-export default AccountPage
+export default ProfilePage
