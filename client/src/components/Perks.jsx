@@ -3,7 +3,7 @@ import {
     WifiIcon,
     ParkingIcon,
     TVIcon,
-    RadioIcon,
+    MountainIcon,
     PetIcon,
     EntranceIcon,
 } from "../icons/PlaceIcons";
@@ -24,6 +24,7 @@ const Perks = ({ perks, setPerks }) => {
             <div className="icons">
                 <input
                     type="checkbox"
+                    checked={perks.includes("wifi")}
                     name="wifi"
                     onChange={checkboxClickHandler}
                 />
@@ -33,6 +34,7 @@ const Perks = ({ perks, setPerks }) => {
             <div className="icons">
                 <input
                     type="checkbox"
+                    checked={perks.includes("parking")}
                     name="parking"
                     onChange={checkboxClickHandler}
                 />
@@ -42,6 +44,7 @@ const Perks = ({ perks, setPerks }) => {
             <div className="icons">
                 <input
                     type="checkbox"
+                    checked={perks.includes("tv")}
                     name="tv"
                     onChange={checkboxClickHandler}
                 />
@@ -51,15 +54,19 @@ const Perks = ({ perks, setPerks }) => {
             <div className="icons">
                 <input
                     type="checkbox"
-                    name="radio"
+                    checked={perks.includes("mountain view")}
+                    name="mountain view"
                     onChange={checkboxClickHandler}
                 />
-                <RadioIcon />
-                <span>Radio</span>
+                <MountainIcon />
+                <span>Mountain View</span>
+
+                
             </div>
             <div className="icons">
                 <input
                     type="checkbox"
+                    checked={perks.includes("pets")}
                     name="pets"
                     onChange={checkboxClickHandler}
                 />
@@ -69,6 +76,7 @@ const Perks = ({ perks, setPerks }) => {
             <div className="icons">
                 <input
                     type="checkbox"
+                    checked={perks.includes("entrance")}
                     name="entrance"
                     onChange={checkboxClickHandler}
                 />

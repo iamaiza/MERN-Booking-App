@@ -1,9 +1,8 @@
 import React, { Fragment, useState } from "react";
 import axios from "axios";
-import { UploadIcon } from "../icons/PlaceIcons";
+import { DeleteIcon, FilledStarIcon, StarIcon, UploadIcon } from "../icons/PlaceIcons";
 
 const UploadImg = ({ photos, setPhotos }) => {
-
     const URL = import.meta.env.VITE_IMG_URL;
     const [photo, setPhoto] = useState("");
 
@@ -33,6 +32,16 @@ const UploadImg = ({ photos, setPhotos }) => {
         });
     };
 
+    const deleteImageHandler = img => {
+        setPhotos([...photos.filter(photo => photo !== img)])
+    };
+
+    const selectAsMainImageHandler = img => {
+        const unselectedPhotos = photos.filter(photo => photo !== img)
+        const newSelectedPhoto = [img, ...unselectedPhotos]
+        setPhotos(newSelectedPhoto)
+    }
+
     return (
         <Fragment>
             <div className="flex gap-2">
@@ -52,12 +61,31 @@ const UploadImg = ({ photos, setPhotos }) => {
             <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                 {photos.length > 0 &&
                     photos.map((link) => (
-                        <div key={link} className="h-32 flex">
+                        <div key={link} className="h-32 flex relative">
                             <img
                                 className="rounded-2xl w-full object-cover"
                                 src={URL + link}
                                 alt=""
                             />
+                            <button
+                                className="absolute bottom-1 right-1 bg-black py-1 px-1 bg-opacity-70 rounded-full cursor-pointer"
+                                onClick={e => {
+                                    e.preventDefault()
+                                    deleteImageHandler(link)
+                                }}
+                            >
+                                <DeleteIcon />
+                            </button>
+                            <button
+                                className="absolute bottom-1 left-1 bg-black py-1 px-1 bg-opacity-70 rounded-full cursor-pointer"
+                                onClick={e => {
+                                    e.preventDefault()
+                                    selectAsMainImageHandler(link)
+                                }}
+                            >
+                                {link === photos[0] ? <FilledStarIcon /> : <StarIcon />}
+                                
+                            </button>
                         </div>
                     ))}
 

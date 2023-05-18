@@ -16,3 +16,12 @@
 .place-form .icons {
     @apply flex items-center p-4 border rounded-2xl gap-2 cursor-pointer
 }
+
+.place-form textarea::-webkit-scrollbar {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.place-form textarea {
+    height: 150px;
+}

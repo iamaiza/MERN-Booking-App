@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import { Layout, Login, Register, Home, ProfilePage, PlacesPage, PlaceForm } from "./index";
+import { Layout, Login, Register, Home, ProfilePage, PlacesPage, PlaceForm, PlacePage } from "./index";
 import { UserContextProvider } from "./Context/UserContext";
 import axios from "axios"
 
-axios.defaults.baseURL = "http://localhost:3000"
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -17,6 +17,8 @@ function App() {
           <Route path="/account" element={<ProfilePage />} />
           <Route path="/account/places" element={<PlacesPage />} />
           <Route path="/account/places/new" element={<PlaceForm />} />
+          <Route path="/account/places/:id" element={<PlaceForm />} />
+          <Route path="/place/:id" element={<PlacePage />} />
         </Route>
       </Routes>
     </UserContextProvider>

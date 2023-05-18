@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from "react";
-import { Navigate } from "react-router-dom";
+import React, { useState, Fragment, useEffect } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import "./PlaceForm.css";
 import Perks from "../components/Perks";
 import UploadImg from "../components/UploadImg";
@@ -7,6 +7,7 @@ import axios from "axios";
 import Navigation from "../components/Navigation";
 
 const PlaceForm = () => {
+    const { id } = useParams();
     const [title, setTitle] = useState("");
     const [address, setAddress] = useState("");
     const [photos, setPhotos] = useState([]);
@@ -16,7 +17,28 @@ const PlaceForm = () => {
     const [checkInTime, setCheckInTime] = useState("");
     const [checkOutTime, setCheckOutTime] = useState("");
     const [maxGuest, setMaxGuest] = useState(1);
-    const [redirect, setRedirect] = useState(false)
+    const [price, setPrice] = useState(100)
+    const [redirect, setRedirect] = useState(false);
+
+    useEffect(() => {
+        if (!id) return;
+        getEachPlaceData();
+    }, [id]);
+
+    const getEachPlaceData = async () => {
+        const { data } = await axios.get(`places/${id}`);
+
+        setTitle(data.title);
+        setAddress(data.address);
+        setPhotos(data.images);
+        setDescription(data.description);
+        setPerks(data.perks);
+        setExtraInfo(data.extraInfo);
+        setCheckInTime(data.checkIn);
+        setCheckOutTime(data.checkOut);
+        setMaxGuest(data.maxGuest);
+        setPrice(data.price)
+    };
 
     const inputTitle = (title) => <h2>{title}</h2>;
     const inputText = (text) => <p>{text}</p>;
@@ -30,45 +52,44 @@ const PlaceForm = () => {
         );
     };
 
-    const emptyInput = (
-        title === '' || address === '' || photos === [] || 
-        description === '' || perks === [] || extraInfo === '' || 
-        checkInTime === '' || checkOutTime === ''
-    )
-    const addNewPlaceHandler = async (e) => {
+    const emptyInput = title === "" || address === "" || photos === [] || description === "" || 
+        perks === []  || checkInTime === "" || checkOutTime === "";
+
+    const addNewAndUpdatePlaceHandler = async (e) => {
         e.preventDefault();
-
+        const placeData = {title,
+            address, photos, description, perks,
+            extraInfo, checkInTime, checkOutTime, maxGuest, price
+        }
         try {
+            if (id) {
+                await axios.put('/places/updatePlace', {id, ...placeData})
+                setRedirect(true);
+            } else {
+                if (emptyInput) {
+                    return;
+                }
+                await axios.post("/add-places", placeData);
 
-            if(emptyInput) {
-                return;
+                setRedirect(true);
             }
-            await axios.post("/add-places", {
-                title,
-                address,
-                photos,
-                description,
-                perks,
-                extraInfo,
-                checkInTime,
-                checkOutTime,
-                maxGuest,
-            });
-    
-            setRedirect(true)
         } catch (error) {
             console.log(error);
         }
     };
 
-    if(redirect && !emptyInput) {
-        return <Navigate to="/account/places" />
+    if (redirect && !emptyInput) {
+        return <Navigate to="/account/places" />;
     }
 
     return (
         <div>
             <Navigation />
-            <form action="" className="place-form" onSubmit={addNewPlaceHandler}>
+            <form
+                action=""
+                className="place-form"
+                onSubmit={addNewAndUpdatePlaceHandler}
+            >
                 <div>
                     {preInput(
                         "Title",
@@ -125,7 +146,7 @@ const PlaceForm = () => {
                         "Check in&out times",
                         "Add check in and out times, remember to have some time window for cleaning the room between guest"
                     )}
-                    <div className="grid sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div>
                             <h3>Check in time</h3>
                             <input
@@ -151,6 +172,14 @@ const PlaceForm = () => {
                                 type="number"
                                 value={maxGuest}
                                 onChange={(e) => setMaxGuest(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <h3>Price per night</h3>
+                            <input
+                                type="number"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
                             />
                         </div>
                     </div>
