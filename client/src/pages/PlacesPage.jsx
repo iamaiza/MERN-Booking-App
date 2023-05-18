@@ -9,11 +9,11 @@ const PlacesPage = () => {
     const [places, setPlaces] = useState([])
 
     useEffect(() => {
-      getAllPlaces()
+      getAllUserPlaces()
     }, [])
 
-    const getAllPlaces = async() => {
-      const { data } = await axios.get("/places")
+    const getAllUserPlaces = async() => {
+      const { data } = await axios.get("/user-places")
       setPlaces(data)
     }
     return (

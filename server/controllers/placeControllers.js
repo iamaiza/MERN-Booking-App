@@ -41,6 +41,7 @@ const addNewPlaces = (req, res) => {
         checkInTime,
         checkOutTime,
         maxGuest,
+        price
     } = req.body;
 
     const { token } = req.cookies
@@ -55,14 +56,14 @@ const addNewPlaces = (req, res) => {
             description, perks, extraInfo,
             checkIn: checkInTime,
             checkOut: checkOutTime,
-            maxGuest
+            maxGuest, price
         })
         res.json(place)
     })
 
 };
 
-const getAllPlaces = (req, res) => {
+const getAllPlacesOfEachUser = (req, res) => {
     const { token } = req.cookies
 
     jwt.verify(token, process.env.JWT_SECRET, {}, async(err, userData) => {
@@ -72,9 +73,47 @@ const getAllPlaces = (req, res) => {
     })
 }
 
+const getEachPlaceData = async(req, res) => {
+    const { id } = req.params
+
+    const place = await Places.findById(id)
+    res.json(place)
+}
+
+const updateEachPlace = (req, res) => {
+    const { token } = req.cookies
+    const {
+        id, title, address, photos,
+        description, perks, extraInfo,
+        checkInTime, checkOutTime, maxGuest, price } = req.body;
+    jwt.verify(token, process.env.JWT_SECRET, {}, async(err, userData) => {
+        const place = await Places.findById(id)
+        if(userData.id === place.owner.toString()) {
+            place.set({
+                title, address,
+                images: photos,
+                description, perks, extraInfo,
+                checkIn: checkInTime,
+                checkOut: checkOutTime,
+                maxGuest, price
+            })
+            place.save()
+            res.json("ok")
+        }
+    })
+}
+
+const getAllPlaces = async (req, res) => {
+    const place = await Places.find()
+    res.json(place)
+}
+
 module.exports = { 
     uploadImageByLink, 
     uploadMediaImgFile, 
     addNewPlaces,
-    getAllPlaces 
+    getAllPlacesOfEachUser,
+    getEachPlaceData,
+    updateEachPlace,
+    getAllPlaces
 };

@@ -1,0 +1,18 @@
+@media screen and (min-width: 900px) {
+    .main-img {
+        height: 70vh;
+    }
+    .main-img img {
+        width: 100%;
+    }
+    .sub-img {
+        height: 70vh;
+    }
+    .sub-img figure{
+        height: 35vh;
+    }
+    .sub-img img {
+        width: 100%;
+        height: 100%;
+    }
+}
