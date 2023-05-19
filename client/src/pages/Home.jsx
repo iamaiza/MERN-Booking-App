@@ -24,7 +24,7 @@ const Home = () => {
           </div>
           <h3 className='font-bold text-lg truncate'>{place.address}</h3>
           <h2 className='text-sm text-gray-500'>{place.title}</h2>
-          <div>${place.price} night</div>
+          <div><b>${place.price}</b> night</div>
         </Link>
       ))}
     </div>
