@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Layout, Login, Register, Home, ProfilePage, PlacesPage, PlaceForm, PlacePage } from "./index";
+import { Layout, Login, Register, Home, ProfilePage, PlacesPage, PlaceForm, PlacePage, BookingsPage, BookingPage } from "./index";
 import { UserContextProvider } from "./Context/UserContext";
 import axios from "axios"
 
@@ -19,6 +19,8 @@ function App() {
           <Route path="/account/places/new" element={<PlaceForm />} />
           <Route path="/account/places/:id" element={<PlaceForm />} />
           <Route path="/place/:id" element={<PlacePage />} />
+          <Route path="/account/bookings" element={<BookingsPage />} />
+          <Route path="/account/bookings/:id" element={<BookingPage />} />
         </Route>
       </Routes>
     </UserContextProvider>

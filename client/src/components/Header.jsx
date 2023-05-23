@@ -12,7 +12,7 @@ const Header = () => {
                 <LogoIcon />
                 <span className="font-bold text-xl">airbnb</span>
             </Link>
-            <div className="flex gap-3 border rounded-full py-3 px-7 shadow-md shadow-gray-300">
+            <div className="hidden lg:flex gap-3 border rounded-full py-3 px-7 shadow-md shadow-gray-300">
                 <div className="font-bold">Anywhere</div>
                 <div className="border-l"></div>
                 <div className="font-bold">Anyweek</div>

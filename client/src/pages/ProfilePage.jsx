@@ -23,7 +23,7 @@ const ProfilePage = () => {
     if(!isReady) {
         return "Loading....."
     }
-    if(isReady && !user) {
+    if(isReady && !user && !redirect) {
         return <Navigate to="/login" />
     }
 
