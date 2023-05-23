@@ -21,7 +21,7 @@ const Navigation = () => {
     }
 
     return (
-        <nav className="w-full flex justify-center gap-2 mt-8 mb-8">
+        <nav className="w-full flex justify-center flex-wrap gap-2 mt-8 mb-8">
             <Link className={navClasses("profile")} to="/account">
                 <UserAvatar />
                 My profile
